@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-import {calculateExtensionScriptUrl} from '../service/extensions-impl';
+import {fromClass} from '../../../src/service';
+
 
 /**
- * Import the "core" entry point for the AMP CDN Service Worker. This shell
- * file is kept intentionally small, so that checking if it has changed (and
- * thus, if a new SW must be installed) will be very fast.
+ * Manages registered amp-fresh components and does the xhr request
+ * and update.
  */
-const url = calculateExtensionScriptUrl(self.location, 'cache-service-worker',
-    '$internalRuntimeVersion$', true);
-importScripts(url);
+export class AmpFreshManager {}
+
+/**
+ * @param {!Window} window
+ * @return {!AmpFreshManager}
+ */
+export function installAmpFreshManager(win) {
+  return /** @type {!AmpFreshManager} */ (
+      fromClass(win, 'ampFreshManager', AmpFreshManager));
+}

@@ -14,13 +14,27 @@
  * limitations under the License.
  */
 
-import {calculateExtensionScriptUrl} from '../service/extensions-impl';
+import {isExperimentOn} from '../../../src/experiments';
+import {isLayoutSizeDefined} from '../../../src/layout';
+import {user} from '../../../src/log';
 
-/**
- * Import the "core" entry point for the AMP CDN Service Worker. This shell
- * file is kept intentionally small, so that checking if it has changed (and
- * thus, if a new SW must be installed) will be very fast.
- */
-const url = calculateExtensionScriptUrl(self.location, 'cache-service-worker',
-    '$internalRuntimeVersion$', true);
-importScripts(url);
+
+/** @const */
+const TAG = 'amp-fresh';
+
+export class AmpFresh extends AMP.BaseElement {
+
+  /** @override */
+  isLayoutSupported(layout) {
+    return isLayoutSizeDefined(layout);
+  }
+
+  buildCallback() {
+    /** @private @const {boolean} */
+    this.isExperimentOn_ = isExperimentOn(this.win, TAG);
+
+    user().assert(this.isExperimentOn_, `Experiment ${TAG} disabled`);
+  }
+}
+
+AMP.registerElement('amp-fresh', AmpFresh);

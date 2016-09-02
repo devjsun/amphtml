@@ -13,14 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import {calculateExtensionScriptUrl} from '../service/extensions-impl';
-
-/**
- * Import the "core" entry point for the AMP CDN Service Worker. This shell
- * file is kept intentionally small, so that checking if it has changed (and
- * thus, if a new SW must be installed) will be very fast.
- */
-const url = calculateExtensionScriptUrl(self.location, 'cache-service-worker',
-    '$internalRuntimeVersion$', true);
-importScripts(url);
