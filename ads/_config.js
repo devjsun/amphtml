@@ -70,6 +70,7 @@ export const adPrefetch = {
   pubmatic: 'https://ads.pubmatic.com/AdServer/js/amp.js',
   pubmine: 'https://s.pubmine.com/showad.js',
   pulsepoint: 'https://ads.contextweb.com/TagPublish/getjs.static.js',
+  purch: 'https://ads.servebom.com/tmnhead.js',
   revcontent: 'https://labs-cdn.revcontent.com/build/amphtml/revcontent.amp.min.js',
   smartadserver: 'https://ec-ns.sascdn.com/diff/js/smart.js',
   sortable: 'https://www.googletagservices.com/tag/js/gpt.js',
