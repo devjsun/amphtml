@@ -33,7 +33,7 @@ export function purch(global, data) {
   const adsrc = data.src;
   if (typeof adsrc != 'undefined') {
     validateSrcPrefix('https:', adsrc);
-   // validateSrcContains('/addyn/', adsrc);
+    writeScript(window, 'https://ads.servebom.com/tmnhead.js');
     writeScript(global, adsrc);
   } else {
     const d = global.document.createElement('div');
