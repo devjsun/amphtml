@@ -17,9 +17,9 @@
 import {BaseElement} from '../src/base-element';
 import {assertHttpsUrl} from '../src/url';
 import {isLayoutSizeDefined} from '../src/layout';
-import {loadPromise} from '../src/event-helper';
 import {registerElement} from '../src/custom-element';
 import {getMode} from '../src/mode';
+import {dev} from '../src/log';
 
 /**
  * @param {!Window} win Destination window for the new element.
@@ -36,7 +36,7 @@ export function installVideo(win) {
 
     /** @override */
     buildCallback() {
-      /** @private @const {!HTMLVideoElement} */
+      /** @private @const {!Element} */
       this.video_ = this.element.ownerDocument.createElement('video');
 
       const posterAttr = this.element.getAttribute('poster');
@@ -45,6 +45,9 @@ export function installVideo(win) {
             'No "poster" attribute has been provided for amp-video.');
       }
 
+      // Enable inline play for iOS.
+      this.video_.setAttribute('playsinline', '');
+      this.video_.setAttribute('webkit-playsinline', '');
       // Disable video preload in prerender mode.
       this.video_.setAttribute('preload', 'none');
       this.propagateAttributes(['poster', 'controls'], this.video_);
@@ -79,12 +82,13 @@ export function installVideo(win) {
           return;
         }
         if (child.getAttribute && child.getAttribute('src')) {
-          assertHttpsUrl(child.getAttribute('src'), child);
+          assertHttpsUrl(child.getAttribute('src'),
+              dev().assertElement(child));
         }
         this.video_.appendChild(child);
       });
 
-      return loadPromise(this.video_);
+      return this.loadPromise(this.video_);
     }
 
     /** @override */
