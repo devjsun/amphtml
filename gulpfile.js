@@ -59,7 +59,7 @@ declareExtension('amp-audio', '0.1', false);
 declareExtension('amp-brid-player', '0.1', false);
 declareExtension('amp-brightcove', '0.1', false);
 declareExtension('amp-kaltura-player', '0.1', false);
-declareExtension('amp-carousel', '0.1', true, 'NO_TYPE_CHECK');
+declareExtension('amp-carousel', '0.1', true);
 declareExtension('amp-dailymotion', '0.1', false);
 declareExtension('amp-dynamic-css-classes', '0.1', false, 'NO_TYPE_CHECK');
 declareExtension('amp-experiment', '0.1', false, 'NO_TYPE_CHECK');
@@ -67,7 +67,7 @@ declareExtension('amp-facebook', '0.1', false);
 declareExtension('amp-fit-text', '0.1', true, 'NO_TYPE_CHECK');
 declareExtension('amp-font', '0.1', false, 'NO_TYPE_CHECK');
 declareExtension('amp-form', '0.1', true, 'NO_TYPE_CHECK');
-declareExtension('amp-fresh', '0.1', false, 'NO_TYPE_CHECK');
+declareExtension('amp-fresh', '0.1', true);
 declareExtension('amp-fx-flying-carpet', '0.1', true, 'NO_TYPE_CHECK');
 declareExtension('amp-gfycat', '0.1', false);
 declareExtension('amp-iframe', '0.1', false, 'NO_TYPE_CHECK');
@@ -87,7 +87,7 @@ declareExtension('amp-share-tracking', '0.1', false);
 declareExtension('amp-sidebar', '0.1', true, 'NO_TYPE_CHECK');
 declareExtension('amp-soundcloud', '0.1', false);
 declareExtension('amp-springboard-player', '0.1', false);
-declareExtension('amp-sticky-ad', '0.1', true, 'NO_TYPE_CHECK');
+declareExtension('amp-sticky-ad', '0.1', true);
 /**
  * @deprecated `amp-slides` is deprecated and will be deleted before 1.0.
  * Please see {@link AmpCarousel} with `type=slides` attribute instead.
@@ -98,7 +98,7 @@ declareExtension('amp-twitter', '0.1', false);
 declareExtension('amp-user-notification', '0.1', true, 'NO_TYPE_CHECK');
 declareExtension('amp-vimeo', '0.1', false, 'NO_TYPE_CHECK');
 declareExtension('amp-vine', '0.1', false, 'NO_TYPE_CHECK');
-declareExtension('amp-viz-vega', '0.1', true, 'NO_TYPE_CHECK');
+declareExtension('amp-viz-vega', '0.1', true);
 declareExtension('amp-google-vrview-image', '0.1', false, 'NO_TYPE_CHECK');
 declareExtension('amp-youtube', '0.1', false);
 
@@ -158,6 +158,7 @@ function compile(watch, shouldMinify, opt_preventRemoveAndMakeDir,
     preventRemoveAndMakeDir: opt_preventRemoveAndMakeDir,
     externs: ['ads/ads.extern.js',],
     includeBasicPolyfills: true,
+    include3pDirectories: true,
   });
 
   // For compilation with babel we start with the amp-babel entry point,
@@ -363,22 +364,20 @@ function dist() {
 function checkTypes() {
   process.env.NODE_ENV = 'production';
   cleanupBuildDir();
-  buildAlp({
+  // Disabled to improve type check performance, since this provides
+  // little incremental value.
+  /*buildExperiments({
     minify: true,
     checkTypes: true,
     preventRemoveAndMakeDir: true,
-  });
-  buildSw({
-    minify: true,
-    checkTypes: true,
-    preventRemoveAndMakeDir: true,
-  });
-  buildExperiments({
-    minify: true,
-    checkTypes: true,
-    preventRemoveAndMakeDir: true,
-  });
-  var compileSrcs = ['./src/amp-babel.js'];
+  });*/
+  var compileSrcs = [
+    './src/amp-babel.js',
+    './src/amp-shadow.js',
+    './ads/alp/install-alp.js',
+    './src/service-worker/shell.js',
+    './src/service-worker/kill.js',
+  ];
   var extensionSrcs = Object.values(extensions).filter(function(extension) {
     return !extension.noTypeCheck;
   }).map(function(extension) {
@@ -387,6 +386,7 @@ function checkTypes() {
   }).sort();
   closureCompile(compileSrcs.concat(extensionSrcs),  './dist',
       'check-types.js', {
+        includePolyfills: true,
         checkTypes: true,
         externs: ['build-system/amp.extension.extern.js',],
       });

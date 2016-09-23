@@ -286,6 +286,21 @@ export class Log {
   }
 
   /**
+   * Throws an error if the first argument isn't a number.
+   *
+   * Otherwise see `assert` for usage
+   *
+   * @param {*} shouldBeNumber
+   * @param {string=} opt_message The assertion message
+   * @return {number} The value of shouldBeTrueish.
+   */
+  assertNumber(shouldBeNumber, opt_message) {
+    this.assert(typeof shouldBeNumber == 'number',
+        (opt_message || 'Number expected') + ': %s', shouldBeNumber);
+    return /** @type {number} */ (shouldBeNumber);
+  }
+
+  /**
    * Asserts and returns the enum value. If the enum doesn't contain such a value,
    * the error is thrown.
    *
@@ -407,6 +422,17 @@ let logConstructor = null;
 
 export function initLogConstructor() {
   logConstructor = Log;
+  // Initialize instances for use. If a binary (an extension for example) that
+  // does not call `initLogConstructor` invokes `dev()` or `user()` earlier
+  // than the binary that does call `initLogConstructor` (amp.js), the extension
+  // will throw an error as that extension will never be able to initialize
+  // the log instances and we also don't want it to call `initLogConstructor`
+  // either (since that will cause the Log implementation to be bundled into that
+  // binary). So we must initialize the instances eagerly so that they are
+  // ready for use (stored globally) after the main binary calls
+  // `initLogConstructor`.
+  dev();
+  user();
 }
 
 export function resetLogConstructorForTesting() {
