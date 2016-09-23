@@ -33,14 +33,6 @@ export function purch(global, data) {
   const adsrc = data.src;
   if (typeof adsrc != 'undefined') {
     validateSrcPrefix('https:', adsrc);
-    writeScript(window, 'https://ads.servebom.com/tmnhead.js');
     writeScript(global, adsrc);
-  } else {
-    const d = global.document.createElement('div');
-    d.setAttribute('id', data['divid']);
-    global.document.getElementById('c').appendChild(d);
-
-    writeScript(window,
-        'https://ads.servebom.com/tmnhead.js');
   }
 }

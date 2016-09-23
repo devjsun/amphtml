@@ -70,7 +70,7 @@ export const adPrefetch = {
   pubmatic: 'https://ads.pubmatic.com/AdServer/js/amp.js',
   pubmine: 'https://s.pubmine.com/showad.js',
   pulsepoint: 'https://ads.contextweb.com/TagPublish/getjs.static.js',
-  purch: 'https://ads.servebom.com/tmnhead.js',
+  purch: 'https://ramp.purch.com/serve/creative_amp.js',
   revcontent: 'https://labs-cdn.revcontent.com/build/amphtml/revcontent.amp.min.js',
   smartadserver: 'https://ec-ns.sascdn.com/diff/js/smart.js',
   sortable: 'https://www.googletagservices.com/tag/js/gpt.js',
@@ -170,6 +170,7 @@ export const adPreconnect = {
     'https://securepubads.g.doubleclick.net',
     'https://tpc.googlesyndication.com',
   ],
+  purch: 'https://ads.servebom.com',
   pulsepoint: 'https://tag.contextweb.com',
   revcontent: [
     'https://trends.revcontent.com',
