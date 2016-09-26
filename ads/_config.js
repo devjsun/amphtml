@@ -284,7 +284,6 @@ export const adConfig = {
   },
   purch: {
     prefetch: 'https://ramp.purch.com/serve/creative_amp.js',
-    preconnect: 'https://ads.servebom.com',
   },
   pulsepoint: {
     prefetch: 'https://ads.contextweb.com/TagPublish/getjs.static.js',
