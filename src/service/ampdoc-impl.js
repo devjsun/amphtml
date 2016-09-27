@@ -106,6 +106,16 @@ export class AmpDocService {
    * @return {!AmpDoc}
    */
   getAmpDoc(opt_node) {
+    // Ensure that node is attached if specified. This check uses a new and
+    // fast `isConnected` API and thus only checked on platforms that have it.
+    // See https://www.chromestatus.com/feature/5676110549352448.
+    if (opt_node) {
+      dev().assert(
+          opt_node['isConnected'] === undefined ||
+          opt_node['isConnected'] === true,
+          'The node must be attached to request ampdoc.');
+    }
+
     // Single document: return it immediately.
     if (this.singleDoc_) {
       return this.singleDoc_;
@@ -271,6 +281,15 @@ export class AmpDoc {
    */
   getElementById(id) {
     return this.getRootNode().getElementById(id);
+  }
+
+  /**
+   * Whether the node is currently contained in the DOM of the root.
+   * @param {?Node} node
+   * @return {boolean}
+   */
+  contains(node) {
+    return this.getRootNode().contains(node);
   }
 }
 
