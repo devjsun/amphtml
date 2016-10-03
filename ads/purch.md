@@ -20,9 +20,9 @@ limitations under the License.
 
 ```html
 <amp-ad width=300 height=250
-        type="purch"
-        data-pid="2500"
-        data-divid="ad_300x250">
+  type="purch"
+  data-pid="2882"
+  data-divid="rightcol_top">
 </amp-ad>
 ```
 

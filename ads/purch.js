@@ -27,10 +27,10 @@ import {
 export function purch(global, data) {
   // TODO: check mandatory fields
   validateData(data, [],
-      ['pid', 'divid', 'src']);
+      ['pid', 'divid']);
   global.data = data;
   
-  const adsrc = data.src;
+  const adsrc = 'https://ramp.purch.com/serve/creative_amp.js';
   if (typeof adsrc != 'undefined') {
     validateSrcPrefix('https:', adsrc);
     writeScript(global, adsrc);
